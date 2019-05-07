@@ -8,9 +8,10 @@ import base64
 # note: request *should* be of the form 'alphak'
 ENCODE_BEGIN = b'\xaeU\xae\xa1C\x9b,Uzd\xf8\xef'
 ENCODE_END   = b'"}'
-def encode(text, pitch=0, speed=2, voice="kyuri"):
+# kyuri, jinho, matt, clara, jose, carmen, louis, roxane, shinji, yuri, liangliang, meimei
+def encode(text, pitch=0, speed=0, voice="shinji"):
     params = 'pitch":{},"speaker":{},"speed":{},"text":"'.format(
-            pitch, 
+            pitch,
             "\"{}\"".format(voice),
             speed
     ).encode('utf-8')
@@ -26,12 +27,12 @@ def get_audio(tts_id):
     return r.content
 
 # first arg = korean text
-text = unicode(sys.argv[1], 'utf-8') 
+text = sys.argv[1]
 # second arg = mp3 output file (e.g. test.mp3)
 outfile = sys.argv[2]
 # encode the full request as base64
 encoded = encode(text)
-# part 1: get the TTS id 
+# part 1: get the TTS id
 res = get_id(encoded)
 tts_id = json.loads(res)['id']
 # part 2: get the audio for this id
@@ -40,4 +41,7 @@ audio = get_audio(tts_id)
 with open(outfile, 'wb') as f:
     f.write(audio)
 # play file (works on OS X)
-os.system("play {}".format(outfile))
+#  os.system("play {}".format(outfile))
+# play file (works on Windows http://www.mailsend-online.com/wp/cmdmp3new.zip)
+os.system("cmdmp3.exe {}".format(outfile))
+
