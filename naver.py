@@ -9,7 +9,7 @@ import base64
 ENCODE_BEGIN = b'\xaeU\xae\xa1C\x9b,Uzd\xf8\xef'
 ENCODE_END   = b'"}'
 # kyuri, jinho, matt, clara, jose, carmen, louis, roxane, shinji, yuri, liangliang, meimei
-def encode(text, pitch=0, speed=0, voice="shinji"):
+def encode(text, pitch=0, speed=0, voice="yuri"):
     params = 'pitch":{},"speaker":{},"speed":{},"text":"'.format(
             pitch,
             "\"{}\"".format(voice),
@@ -40,8 +40,11 @@ audio = get_audio(tts_id)
 # save the audio to a file
 with open(outfile, 'wb') as f:
     f.write(audio)
+
+# copy to clipboard
+os.system("echo {} | clip".format(text))
+
 # play file (works on OS X)
 #  os.system("play {}".format(outfile))
 # play file (works on Windows http://www.mailsend-online.com/wp/cmdmp3new.zip)
 os.system("cmdmp3.exe {}".format(outfile))
-
